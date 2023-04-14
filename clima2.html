@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Clima de Buenos Aires</title>
+    <script src="clima.js"></script>
+  </head>
+  <body>
+    <h1>Clima actual de Buenos Aires</h1>
+    <div id="weather-data"></div>
+  </body>
+
+    <script type="text/javascript">
+    
+    async function getWeather() {
+  const apiKey = "73c571b0899a30c2c536bb1e3a2bfcc6";
+  const city = "Buenos Aires";
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
+
+function showWeather() {
+  const weatherData = document.getElementById("weather-data");
+
+  getWeather()
+    .then((data) => {
+      weatherData.innerHTML = `
+        <p><strong>Ciudad:</strong> ${data.name}</p>
+        <p><strong>Clima:</strong> ${data.weather[0].description}</p>
+        <p><strong>Temperatura:</strong> ${data.main.temp} °C</p>
+        <p><strong>Humedad:</strong> ${data.main.humidity}%</p>
+        <p><strong>Velocidad del viento:</strong> ${data.wind.speed} m/s</p>
+      `;
+    })
+    .catch((error) => {
+      weatherData.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
+}
+
+showWeather();
+
+    </script>
+    </body>
+</html>
